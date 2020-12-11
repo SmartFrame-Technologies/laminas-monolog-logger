@@ -12,6 +12,7 @@ use Psr\Log\NullLogger;
 use SmartFrame\Logger\Factory\LoggerFactory;
 use SmartFrame\Logger\HandlerFactory\ElasticsearchHandlerFactory;
 use SmartFrame\Logger\HandlerFactory\StreamHandlerFactory;
+use SmartFrame\Logger\Initializer\LoggerAwareInitializer;
 use SmartFrame\Logger\Middleware\RequestLoggerMiddleware;
 use SmartFrame\Logger\Processor\ModuleProcessor;
 
@@ -39,6 +40,9 @@ class ConfigProvider
                 NullLogger::class,
                 ModuleProcessor::class,
                 RequestLoggerMiddleware::class
+            ],
+            'initializers' => [
+                LoggerAwareInitializer::class,
             ],
         ];
     }
