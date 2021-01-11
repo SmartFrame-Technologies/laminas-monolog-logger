@@ -1,6 +1,10 @@
 # laminas-monolog-logger
 Implementation monolog library using laminas service manager and other libs
 
+## Build Status
+
+[![Build Status](https://travis-ci.com/SmartFrame-Technologies/laminas-monolog-logger.svg?branch=master)](https://travis-ci.com/SmartFrame-Technologies/laminas-monolog-logger)
+
 ## License
 
 Copyright 2020 SmartFrame Technologies
