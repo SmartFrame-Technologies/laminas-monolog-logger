@@ -44,6 +44,6 @@ final class LoggerAbstractFactory implements AbstractFactoryInterface
 
     protected function getConfig(ContainerInterface $container): array
     {
-        return $container->has(self::CONFIG_KEY) ? $container->get(self::CONFIG_KEY) : [];
+        return $container->get('config')[self::CONFIG_KEY] ?? [];
     }
 }
