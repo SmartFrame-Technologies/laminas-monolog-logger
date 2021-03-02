@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SmartFrameTest\Logger\Factory;
 
-use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Monolog\Handler\ElasticsearchHandler;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
@@ -20,10 +20,10 @@ class LoggerFactoryTest extends TestCase
 
     public function testInvoke(): void
     {
-        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock = $this->createMock(ServiceLocatorInterface::class);
 
         $containerMock
-            ->expects(self::exactly(2))
+            ->expects(self::once())
             ->method('get')
             ->willReturnMap([
                 ['config', [
@@ -41,8 +41,14 @@ class LoggerFactoryTest extends TestCase
                             UidProcessor::class => []
                         ]
                     ]]
-                ],
-                [ElasticsearchHandler::class, $this->createMock(HandlerInterface::class)]
+                ]
+            ]);
+
+        $containerMock
+            ->expects(self::once())
+            ->method('build')
+            ->willReturnMap([
+                [ElasticsearchHandler::class, [], $this->createMock(HandlerInterface::class)]
             ]);
 
         $containerMock
