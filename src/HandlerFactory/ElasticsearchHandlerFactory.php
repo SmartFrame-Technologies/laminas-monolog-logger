@@ -9,22 +9,23 @@ use Interop\Container\ContainerInterface;
 use Monolog\Handler\ElasticsearchHandler;
 use Monolog\Handler\HandlerInterface;
 
-class ElasticsearchHandlerFactory extends AbstractHandlerFactory
+class ElasticsearchHandlerFactory implements HandlerFactoryInterface
 {
+    use SpecialHandlersTrait;
+    use FormatterTrait;
+
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): HandlerInterface
     {
         $client = ClientBuilder::create()
             ->setHosts($container->get('config')['elasticsearch']['hosts'])
             ->build();
 
-        //        array(
-//            'index' => 'elastic_index_name',
-//            'type' => 'elastic_doc_type',
-//        );
-        $handlerOptions = $container->get('config')['logger']['handlers'][ElasticsearchHandler::class];
+        $handler = new ElasticsearchHandler($client, $options);
 
-        $handler = new ElasticsearchHandler($client, $handlerOptions);
+        if (isset($options['formatter'])) {
+            $handler = $this->applyFormatters($handler, $options['formatter']);
+        }
 
-        return $this->applySpecialHandlers($handler, $handlerOptions);
+        return $this->applySpecialHandlers($handler, $options);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SmartFrameTest\Logger\Factory;
+namespace SmartFrameTest\Logger\HandlerFactory;
 
 use Interop\Container\ContainerInterface;
 use Monolog\Handler\ElasticsearchHandler;
@@ -26,15 +26,10 @@ class ElasticsearchHandlerFactoryTest extends TestCase
                     'elasticsearch' => [
                         'hosts' => []
                     ],
-                    'logger' => [
-                        'handlers' => [
-                            ElasticsearchHandler::class => []
-                        ]
-                    ]
                 ]]
             ]);
 
-        $instance = (new ElasticsearchHandlerFactory())->__invoke($containerMock, ElasticsearchHandler::class);
+        $instance = (new ElasticsearchHandlerFactory())->__invoke($containerMock, ElasticsearchHandler::class, []);
 
         self::assertInstanceOf(ElasticsearchHandler::class, $instance);
     }
@@ -50,18 +45,14 @@ class ElasticsearchHandlerFactoryTest extends TestCase
                     'elasticsearch' => [
                         'hosts' => []
                     ],
-                    'logger' => [
-                        'handlers' => [
-                            ElasticsearchHandler::class => [
-                                'whatFailure' => true
-                            ]
-                        ]
-                    ]
-                ]
-                ]
+                ]]
             ]);
 
-        $instance = (new ElasticsearchHandlerFactory())->__invoke($containerMock, ElasticsearchHandler::class);
+        $instance = (new ElasticsearchHandlerFactory())->__invoke($containerMock, ElasticsearchHandler::class,
+            [
+                'whatFailure' => true
+            ]
+        );
 
         self::assertInstanceOf(WhatFailureGroupHandler::class, $instance);
     }
@@ -77,18 +68,12 @@ class ElasticsearchHandlerFactoryTest extends TestCase
                     'elasticsearch' => [
                         'hosts' => []
                     ],
-                    'logger' => [
-                        'handlers' => [
-                            ElasticsearchHandler::class => [
-                                'fingersCrossed' => Logger::INFO
-                            ]
-                        ]
-                    ]
-                ]
-                ]
+                ]]
             ]);
 
-        $instance = (new ElasticsearchHandlerFactory())->__invoke($containerMock, ElasticsearchHandler::class);
+        $instance = (new ElasticsearchHandlerFactory())->__invoke($containerMock, ElasticsearchHandler::class, [
+            'fingersCrossed' => Logger::INFO
+        ]);
 
         self::assertInstanceOf(FingersCrossedHandler::class, $instance);
     }

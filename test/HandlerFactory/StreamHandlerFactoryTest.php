@@ -16,19 +16,7 @@ class StreamHandlerFactoryTest extends TestCase
     {
         $containerMock = $this->createMock(ContainerInterface::class);
 
-        $containerMock
-            ->method('get')
-            ->willReturnMap([
-                ['config', [
-                    'logger' => [
-                        'handlers' => [
-                            StreamHandler::class => ['stream' => 'data/logs/test.log']
-                        ]
-                    ]
-                ]]
-            ]);
-
-        $instance = (new StreamHandlerFactory())->__invoke($containerMock, StreamHandler::class);
+        $instance = (new StreamHandlerFactory())->__invoke($containerMock, StreamHandler::class, ['stream' => 'data/logs/test.log']);
 
         self::assertInstanceOf(StreamHandler::class, $instance);
     }

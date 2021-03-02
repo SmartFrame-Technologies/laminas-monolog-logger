@@ -7,20 +7,20 @@ namespace SmartFrame\Logger\HandlerFactory;
 
 use Interop\Container\ContainerInterface;
 use Monolog\Handler\HandlerInterface;
-use Monolog\Handler\StreamHandler;
+use Monolog\Handler\SocketHandler;
 
-class StreamHandlerFactory implements HandlerFactoryInterface
+class SocketHandlerFactory implements HandlerFactoryInterface
 {
     use SpecialHandlersTrait;
     use FormatterTrait;
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): HandlerInterface
     {
-        if (!isset($options['stream'])) {
-            throw new MissingOptionsException('Missing "stream" option');
+        if (!isset($options['connectionString'])) {
+            throw new MissingOptionsException('Missing "connectionString" option');
         }
 
-        $handler = new StreamHandler($options['stream']);
+        $handler = new SocketHandler($options['connectionString']);
 
         if (isset($options['formatter'])) {
             $handler = $this->applyFormatters($handler, $options['formatter']);

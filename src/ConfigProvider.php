@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace SmartFrame\Logger;
 
 use Monolog\Handler\ElasticsearchHandler;
+use Monolog\Handler\SocketHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use SmartFrame\Logger\Factory\LoggerFactory;
 use SmartFrame\Logger\HandlerFactory\ElasticsearchHandlerFactory;
+use SmartFrame\Logger\HandlerFactory\SocketHandlerFactory;
 use SmartFrame\Logger\HandlerFactory\StreamHandlerFactory;
 use SmartFrame\Logger\Initializer\LoggerAwareInitializer;
 use SmartFrame\Logger\Middleware\RequestLoggerMiddleware;
 use SmartFrame\Logger\Processor\ModuleProcessor;
+use SmartFrame\Logger\Factory\LoggerAbstractFactory;
 
 class ConfigProvider
 {
@@ -34,7 +37,8 @@ class ConfigProvider
             'factories' => [
                 Logger::class => LoggerFactory::class,
                 ElasticsearchHandler::class => ElasticsearchHandlerFactory::class,
-                StreamHandler::class => StreamHandlerFactory::class
+                StreamHandler::class => StreamHandlerFactory::class,
+                SocketHandler::class => SocketHandlerFactory::class
             ],
             'invokables' => [
                 NullLogger::class,
@@ -43,6 +47,9 @@ class ConfigProvider
             ],
             'initializers' => [
                 LoggerAwareInitializer::class,
+            ],
+            'abstract_factories' => [
+                LoggerAbstractFactory::class,
             ],
         ];
     }

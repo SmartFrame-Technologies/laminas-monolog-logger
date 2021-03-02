@@ -16,7 +16,7 @@ trait LoggerFactoryTrait
         if (isset($config['handlers'])) {
             foreach ($config['handlers'] as $handler => $configuration) {
                 if ($container->has($handler)) {
-                    $handlers[] = $container->get($handler);
+                    $handlers[] = $container->build($handler, $configuration);
                 } else {
                     $handlers[] = new $handler(...array_values($configuration));
                 }
