@@ -16,6 +16,10 @@ class ElasticsearchHandlerFactory implements HandlerFactoryInterface
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): HandlerInterface
     {
+        if (!isset($container->get('config')['elasticsearch'])) {
+            throw new MissingConfigurationException('Missing "elasticsearch" configuration');
+        }
+
         $client = ClientBuilder::create()
             ->setHosts($container->get('config')['elasticsearch']['hosts'])
             ->build();
