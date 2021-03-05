@@ -14,7 +14,7 @@ trait FormatterTrait
             throw new MissingOptionsException('Missing "type" option');
         }
 
-        $handler->setFormatter(new $options['type'](...$options['arguments']));
+        $handler->setFormatter(new $options['type'](...$options['arguments'] ?? []));
 
         return $handler;
     }
