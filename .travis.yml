@@ -7,6 +7,7 @@ cache:
 env:
     global:
         - COMPOSER_ARGS="--no-interaction"
+        - COVERAGE_DEPS="php-coveralls/php-coveralls"
 
 matrix:
     fast_finish: true
@@ -14,9 +15,12 @@ matrix:
         - php: 7.4
         - php: 8.0
 
-
 install:
+    - travis_retry composer require --dev $COMPOSER_ARGS $COVERAGE_DEPS
     - travis_retry composer install $COMPOSER_ARGS
 
 script:
-    - vendor/bin/phpunit -c phpunit.xml.dist
+    - vendor/bin/phpunit -c phpunit.xml.dist --colors=always --coverage-clover clover.xml
+
+after_script:
+    - vendor/bin/php-coveralls -v

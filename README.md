@@ -1,9 +1,9 @@
 # laminas-monolog-logger
 The `LaminasMonologLogger` provides integration of the [Monolog](https://github.com/Seldaek/monolog) library into the Laminas framework and Mezzio projects.
 
-## Build Status
-
 [![Build Status](https://travis-ci.com/SmartFrame-Technologies/laminas-monolog-logger.svg?branch=master)](https://travis-ci.com/SmartFrame-Technologies/laminas-monolog-logger)
+[![Coverage Status](https://coveralls.io/repos/github/SmartFrame-Technologies/laminas-monolog-logger/badge.svg?branch=master)](https://coveralls.io/github/SmartFrame-Technologies/laminas-monolog-logger?branch=master)
+
 
 ## Installation
 
