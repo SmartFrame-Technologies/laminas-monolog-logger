@@ -89,8 +89,7 @@ class LoggerTest extends TestCase
     public function minimalServiceProvider(): array
     {
         return [
-            [Logger::class, 'application'],
-            ['logger1', 'name'],
+            [Logger::class, 'application']
         ];
     }
 
