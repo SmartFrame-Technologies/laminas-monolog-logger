@@ -10,7 +10,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use SmartFrame\Logger\Factory\LoggerFactory;
 use SmartFrame\Logger\HandlerFactory\ElasticsearchHandlerFactory;
 use SmartFrame\Logger\HandlerFactory\SocketHandlerFactory;
 use SmartFrame\Logger\HandlerFactory\StreamHandlerFactory;
@@ -35,7 +34,6 @@ class ConfigProvider
                 LoggerInterface::class => Logger::class,
             ],
             'factories' => [
-                Logger::class => LoggerFactory::class,
                 ElasticsearchHandler::class => ElasticsearchHandlerFactory::class,
                 StreamHandler::class => StreamHandlerFactory::class,
                 SocketHandler::class => SocketHandlerFactory::class

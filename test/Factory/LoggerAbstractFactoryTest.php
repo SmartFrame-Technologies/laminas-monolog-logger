@@ -7,6 +7,7 @@ namespace SmartFrameTest\Logger\Factory;
 
 use GuzzleHttp\Ring\Client\CurlHandler;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\ProcessIdProcessor;
@@ -29,6 +30,23 @@ class LoggerAbstractFactoryTest extends TestCase
             ->willReturn($config);
 
         self::assertEquals($result, $factory->canCreate($container, $requestedName));
+    }
+
+    /**
+     * @dataProvider cannotCreateDataProvider
+     */
+    public function testCannotCreate(string $requestedName): void
+    {
+        $this->expectException(ServiceNotFoundException::class);
+        $this->expectExceptionMessage(sprintf(
+            'Unable to resolve service "%s" to a factory; this service name is reserved.',
+            $requestedName
+        ));
+
+        $factory = new LoggerAbstractFactory();
+        $container = $this->createMock(ContainerInterface::class);
+
+        $factory->canCreate($container, $requestedName);
     }
 
     public function testFactorySharedConfiguration(): void
@@ -169,6 +187,14 @@ class LoggerAbstractFactoryTest extends TestCase
                 'Logger',
                 false
             ]
+        ];
+    }
+
+    public function cannotCreateDataProvider(): array
+    {
+        return [
+            ['handlers'],
+            ['processors'],
         ];
     }
 }

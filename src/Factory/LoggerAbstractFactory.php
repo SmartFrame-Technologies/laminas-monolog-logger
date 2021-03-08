@@ -6,6 +6,7 @@ namespace SmartFrame\Logger\Factory;
 
 
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Exception\ServiceNotFoundException;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
@@ -15,9 +16,17 @@ final class LoggerAbstractFactory implements AbstractFactoryInterface
     use LoggerFactoryTrait;
 
     protected const CONFIG_KEY = 'logger';
+    protected const RESERVED_SERVICE_KEYS = ['processors', 'handlers'];
 
     public function canCreate(ContainerInterface $container, $requestedName): bool
     {
+        if (in_array($requestedName, self::RESERVED_SERVICE_KEYS)) {
+            throw new ServiceNotFoundException(sprintf(
+                'Unable to resolve service "%s" to a factory; this service name is reserved.',
+                $requestedName
+            ));
+        }
+
         $config = $this->getConfig($container);
 
         if (empty($config)) {
