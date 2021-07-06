@@ -45,4 +45,18 @@ class StreamHandlerFactoryTest extends TestCase
 
         (new StreamHandlerFactory())($containerMock, StreamHandler::class, []);
     }
+
+    public function testInstanceWithPropertiesSetter(): void
+    {
+        $containerMock = $this->createMock(ContainerInterface::class);
+
+        $handler = (new StreamHandlerFactory())($containerMock, StreamHandler::class, [
+            'stream' => 'data/logs/test.log',
+            'properties' => [
+                'bubble' => false
+            ]
+        ]);
+
+        self::assertEquals(false, $handler->getBubble());
+    }
 }

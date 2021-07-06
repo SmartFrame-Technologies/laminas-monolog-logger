@@ -39,6 +39,20 @@ class SocketHandlerFactoryTest extends TestCase
         self::assertInstanceOf(LogstashFormatter::class, $handler->getFormatter());
     }
 
+    public function testInstanceWithPropertiesSetter(): void
+    {
+        $containerMock = $this->createMock(ContainerInterface::class);
+
+        $handler = (new SocketHandlerFactory())($containerMock, SocketHandler::class, [
+            'connectionString' => 'tcp://127.0.0.1:5000',
+            'properties' => [
+                'connectionTimeout' => 5
+            ]
+        ]);
+
+        self::assertEquals(5, $handler->getConnectionTimeout());
+    }
+
     public function testInvokeMissingStreamArgument(): void
     {
         $this->expectException(MissingOptionsException::class);
