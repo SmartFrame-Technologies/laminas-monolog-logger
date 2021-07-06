@@ -113,4 +113,27 @@ class ElasticsearchHandlerFactoryTest extends TestCase
 
         (new ElasticsearchHandlerFactory())($containerMock, ElasticsearchHandler::class, []);
     }
+
+    public function testInstanceWithPropertiesSetter(): void
+    {
+        $containerMock = $this->createMock(ContainerInterface::class);
+
+        $containerMock
+            ->method('get')
+            ->willReturnMap([
+                ['config', [
+                    'elasticsearch' => [
+                        'hosts' => []
+                    ],
+                ]]
+            ]);
+
+        $handler = (new ElasticsearchHandlerFactory())($containerMock, ElasticsearchHandler::class, [
+            'properties' => [
+                'bubble' => false
+            ]
+        ]);
+
+        self::assertEquals(false, $handler->getBubble());
+    }
 }

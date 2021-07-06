@@ -13,6 +13,7 @@ class ElasticsearchHandlerFactory implements HandlerFactoryInterface
 {
     use SpecialHandlersTrait;
     use FormatterTrait;
+    use PropertiesTrait;
 
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null): HandlerInterface
     {
@@ -28,6 +29,10 @@ class ElasticsearchHandlerFactory implements HandlerFactoryInterface
 
         if (isset($options['formatter'])) {
             $handler = $this->applyFormatters($handler, $options['formatter']);
+        }
+
+        if (isset($options['properties'])) {
+            $this->applyProperties($handler, $options['properties']);
         }
 
         return $this->applySpecialHandlers($handler, $options);
