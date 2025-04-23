@@ -8,6 +8,7 @@ namespace SmartFrame\Logger\HandlerFactory;
 use Interop\Container\ContainerInterface;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\SocketHandler;
+use Monolog\Logger;
 
 class SocketHandlerFactory implements HandlerFactoryInterface
 {
@@ -21,7 +22,7 @@ class SocketHandlerFactory implements HandlerFactoryInterface
             throw new MissingOptionsException('Missing "connectionString" option');
         }
 
-        $handler = new SocketHandler($options['connectionString']);
+        $handler = new SocketHandler($options['connectionString'], isset($options['level']) ? $options['level'] : Logger::DEBUG);
 
         if (isset($options['formatter'])) {
             $handler = $this->applyFormatters($handler, $options['formatter']);
