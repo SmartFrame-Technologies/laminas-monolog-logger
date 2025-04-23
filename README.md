@@ -33,6 +33,7 @@ return [
         'handlers' => [
             Monolog\Handler\StreamHandler::class => [
                 'stream' => '/var/log/php.log'
+                'level' => Monolog\Logger::INFO,
             ],
         ],
         //logger services
@@ -71,7 +72,8 @@ return [
         'handlers' => [
             Monolog\Handler\StreamHandler::class => [
                 'stream' => '/var/log/global.log',
-                'fingersCrossed' => Logger::DEBUG,
+                'fingersCrossed' => Logger::WARNING,
+                'level' => Logger::INFO,
                 'whatFailure' => true
             ],
         ],

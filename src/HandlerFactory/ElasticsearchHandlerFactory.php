@@ -8,6 +8,7 @@ use Elasticsearch\ClientBuilder;
 use Interop\Container\ContainerInterface;
 use Monolog\Handler\ElasticsearchHandler;
 use Monolog\Handler\HandlerInterface;
+use Monolog\Logger;
 
 class ElasticsearchHandlerFactory implements HandlerFactoryInterface
 {
@@ -25,7 +26,7 @@ class ElasticsearchHandlerFactory implements HandlerFactoryInterface
             ->setHosts($container->get('config')['elasticsearch']['hosts'])
             ->build();
 
-        $handler = new ElasticsearchHandler($client, $options);
+        $handler = new ElasticsearchHandler($client, $options, isset($options['level']) ? $options['level'] : Logger::DEBUG);
 
         if (isset($options['formatter'])) {
             $handler = $this->applyFormatters($handler, $options['formatter']);

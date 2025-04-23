@@ -8,6 +8,7 @@ namespace SmartFrame\Logger\HandlerFactory;
 use Interop\Container\ContainerInterface;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 class StreamHandlerFactory implements HandlerFactoryInterface
 {
@@ -21,7 +22,7 @@ class StreamHandlerFactory implements HandlerFactoryInterface
             throw new MissingOptionsException('Missing "stream" option');
         }
 
-        $handler = new StreamHandler($options['stream']);
+        $handler = new StreamHandler($options['stream'], isset($options['level']) ? $options['level'] : Logger::DEBUG);
 
         if (isset($options['formatter'])) {
             $handler = $this->applyFormatters($handler, $options['formatter']);
