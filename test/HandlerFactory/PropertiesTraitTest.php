@@ -8,6 +8,7 @@ use Error;
 use Monolog\Handler\SocketHandler;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
+use SmartFrame\Logger\HandlerFactory\MissingMethodException;
 use SmartFrame\Logger\HandlerFactory\PropertiesTrait;
 
 class PropertiesTraitTest extends TestCase
@@ -30,8 +31,8 @@ class PropertiesTraitTest extends TestCase
     {
         $property = 'undefinedProperty';
 
-        $this->expectException(Error::class);
-        $this->expectExceptionMessage(sprintf('Call to undefined method %s::set%s()', SocketHandler::class, ucfirst($property)));
+        $this->expectException(MissingMethodException::class);
+        $this->expectExceptionMessage(sprintf('Property %s is not settable in %s', $property, SocketHandler::class));
 
         $object = $this->getObjectForTrait(PropertiesTrait::class);
 
